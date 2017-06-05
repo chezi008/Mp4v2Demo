@@ -1,0 +1,3 @@
+# Mp4v2Demo
+Android使用Mp4v2用h264流和acc流合成mp4
+使用mp4v2源码在linux系统下生成对应的so包，AndroidStudio用最新的cmake利用mp4v2库生成mp4文件，用h264流生成mp4文件同一个套路，android进行h264的解码,将生成的每一帧喂入mp4b2库。（目前只做了视频写入，没有进行音频写入）
