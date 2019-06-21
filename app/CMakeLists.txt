@@ -12,7 +12,7 @@ add_library( mp4v2
              IMPORTED )
 set_target_properties( mp4v2
                        PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi/libmp4v2.so )
+                       ../../../../libs/armeabi-v7a/libmp4v2.so )
 include_directories(libs/include)
 
 
