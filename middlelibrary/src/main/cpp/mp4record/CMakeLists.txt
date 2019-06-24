@@ -8,3 +8,4 @@ find_library(log-lib log)
 target_link_libraries(mp4record mp4v2sdk ${log-lib})
 
 
+
