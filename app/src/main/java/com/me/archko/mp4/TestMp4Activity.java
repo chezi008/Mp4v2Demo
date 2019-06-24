@@ -65,7 +65,9 @@ public class TestMp4Activity extends Activity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             try {
-                mInputStream.close();
+                if (mInputStream != null) {
+                    mInputStream.close();
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
