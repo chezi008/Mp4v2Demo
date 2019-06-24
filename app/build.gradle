@@ -30,9 +30,12 @@ android {
             path "CMakeLists.txt"
         }
     }
-    sourceSets.main {
-        jni.srcDirs = []
-        jniLibs.srcDirs = ['libs']
+
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libMp4v2Helper.so'
+        pickFirst 'lib/armeabi-v7a/libMp4v2Helper.so'
+        pickFirst 'lib/arm64-v8a/libmp4record.so'
+        pickFirst 'lib/armeabi-v7a/libmp4record.so'
     }
 }
 
