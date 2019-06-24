@@ -18,7 +18,7 @@
  */
 typedef struct MP4Chapter_s {
     MP4Duration duration; /**< duration of chapter in milliseconds */
-    char title[MP4V2_CHAPTER_TITLE_MAX+1]; /**< title of chapter */
+    char title[MP4V2_CHAPTER_TITLE_MAX + 1]; /**< title of chapter */
 } MP4Chapter_t;
 
 /** Known chapter types.
@@ -26,8 +26,8 @@ typedef struct MP4Chapter_s {
  */
 typedef enum {
     MP4ChapterTypeNone = 0, /**< no chapters found return value */
-    MP4ChapterTypeAny  = 1, /**< any or all known chapter types */
-    MP4ChapterTypeQt   = 2, /**< QuickTime chapter type */
+    MP4ChapterTypeAny = 1, /**< any or all known chapter types */
+    MP4ChapterTypeQt = 2, /**< QuickTime chapter type */
     MP4ChapterTypeNero = 4  /**< Nero chapter type */
 } MP4ChapterType;
 
@@ -44,10 +44,10 @@ typedef enum {
  */
 MP4V2_EXPORT
 void MP4AddChapter(
-    MP4FileHandle hFile,
-    MP4TrackId    chapterTrackId,
-    MP4Duration   chapterDuration,
-    const char*   chapterTitle DEFAULT(0));
+        MP4FileHandle hFile,
+        MP4TrackId chapterTrackId,
+        MP4Duration chapterDuration,
+        const char *chapterTitle DEFAULT(0));
 
 /** Add a QuickTime chapter track.
  *
@@ -65,9 +65,9 @@ void MP4AddChapter(
  */
 MP4V2_EXPORT
 MP4TrackId MP4AddChapterTextTrack(
-    MP4FileHandle hFile,
-    MP4TrackId    refTrackId,
-    uint32_t      timescale DEFAULT(0) );
+        MP4FileHandle hFile,
+        MP4TrackId refTrackId,
+        uint32_t timescale DEFAULT(0));
 
 /** Add a Nero chapter.
  *
@@ -80,9 +80,9 @@ MP4TrackId MP4AddChapterTextTrack(
  */
 MP4V2_EXPORT
 void MP4AddNeroChapter(
-    MP4FileHandle hFile,
-    MP4Timestamp  chapterStart,
-    const char*   chapterTitle DEFAULT(0));
+        MP4FileHandle hFile,
+        MP4Timestamp chapterStart,
+        const char *chapterTitle DEFAULT(0));
 
 /** Convert chapters to another type.
  *
@@ -101,8 +101,8 @@ void MP4AddNeroChapter(
  */
 MP4V2_EXPORT
 MP4ChapterType MP4ConvertChapters(
-    MP4FileHandle  hFile,
-    MP4ChapterType toChapterType DEFAULT(MP4ChapterTypeQt));
+        MP4FileHandle hFile,
+        MP4ChapterType toChapterType DEFAULT(MP4ChapterTypeQt));
 
 /** Delete chapters.
  *
@@ -121,9 +121,9 @@ MP4ChapterType MP4ConvertChapters(
  */
 MP4V2_EXPORT
 MP4ChapterType MP4DeleteChapters(
-    MP4FileHandle  hFile,
-    MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt),
-    MP4TrackId     chapterTrackId DEFAULT(MP4_INVALID_TRACK_ID) );
+        MP4FileHandle hFile,
+        MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt),
+        MP4TrackId chapterTrackId DEFAULT(MP4_INVALID_TRACK_ID));
 
 /** Get list of chapters.
  *
@@ -143,10 +143,10 @@ MP4ChapterType MP4DeleteChapters(
  */
 MP4V2_EXPORT
 MP4ChapterType MP4GetChapters(
-    MP4FileHandle  hFile,
-    MP4Chapter_t** chapterList,
-    uint32_t*      chapterCount,
-    MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt));
+        MP4FileHandle hFile,
+        MP4Chapter_t **chapterList,
+        uint32_t *chapterCount,
+        MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt));
 
 /** Set list of chapters OKOK.
  *
@@ -166,10 +166,10 @@ MP4ChapterType MP4GetChapters(
  */
 MP4V2_EXPORT
 MP4ChapterType MP4SetChapters(
-    MP4FileHandle hFile,
-    MP4Chapter_t* chapterList,
-    uint32_t       chapterCount,
-    MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt));
+        MP4FileHandle hFile,
+        MP4Chapter_t *chapterList,
+        uint32_t chapterCount,
+        MP4ChapterType chapterType DEFAULT(MP4ChapterTypeQt));
 
 /** @} ***********************************************************************/
 

@@ -9,12 +9,12 @@
  *****************************************************************************/
 
 /* MP4 API types */
-typedef void*       MP4FileHandle;
-typedef uint32_t    MP4TrackId;
-typedef uint32_t    MP4SampleId;
-typedef uint64_t    MP4Timestamp;
-typedef uint64_t    MP4Duration;
-typedef uint32_t    MP4EditId;
+typedef void *MP4FileHandle;
+typedef uint32_t MP4TrackId;
+typedef uint32_t MP4SampleId;
+typedef uint64_t MP4Timestamp;
+typedef uint64_t MP4Duration;
+typedef uint32_t MP4EditId;
 
 typedef enum {
     MP4_LOG_NONE = 0,
@@ -25,14 +25,14 @@ typedef enum {
     MP4_LOG_VERBOSE2 = 5,
     MP4_LOG_VERBOSE3 = 6,
     MP4_LOG_VERBOSE4 = 7
-}  MP4LogLevel;
+} MP4LogLevel;
 
 /*****************************************************************************/
 
 typedef void (*MP4LogCallback)(
-    MP4LogLevel loglevel,
-    const char* fmt,
-    va_list     ap );
+        MP4LogLevel loglevel,
+        const char *fmt,
+        va_list ap);
 
 /*****************************************************************************/
 
@@ -41,7 +41,7 @@ typedef void (*MP4LogCallback)(
  * @see MP4EncAndCopySample().
  * @see MP4EncAndCopyTrack().
  */
-typedef uint32_t (*encryptFunc_t)( uint32_t, uint32_t, uint8_t*, uint32_t*, uint8_t** );
+typedef uint32_t (*encryptFunc_t)(uint32_t, uint32_t, uint8_t *, uint32_t *, uint8_t **);
 
 /*****************************************************************************/
 
@@ -263,108 +263,108 @@ typedef uint32_t (*encryptFunc_t)( uint32_t, uint32_t, uint8_t*, uint32_t*, uint
 
 MP4V2_EXPORT
 bool MP4Make3GPCompliant(
-    const char* fileName,
-    char*       majorBrand DEFAULT(0),
-    uint32_t    minorVersion DEFAULT(0),
-    char**      supportedBrands DEFAULT(NULL),
-    uint32_t    supportedBrandsCount DEFAULT(0),
-    bool        deleteIodsAtom DEFAULT(true) );
+        const char *fileName,
+        char *majorBrand DEFAULT(0),
+        uint32_t minorVersion DEFAULT(0),
+        char **supportedBrands DEFAULT(NULL),
+        uint32_t supportedBrandsCount DEFAULT(0),
+        bool deleteIodsAtom DEFAULT(true));
 
 /* NOTE this section of functionality has not yet been fully tested */
 
 MP4V2_EXPORT
 MP4EditId MP4AddTrackEdit(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId DEFAULT(MP4_INVALID_EDIT_ID),
-    MP4Timestamp  startTime DEFAULT(0),
-    MP4Duration   duration DEFAULT(0),
-    bool          dwell DEFAULT(false) );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId DEFAULT(MP4_INVALID_EDIT_ID),
+        MP4Timestamp startTime DEFAULT(0),
+        MP4Duration duration DEFAULT(0),
+        bool dwell DEFAULT(false));
 
 MP4V2_EXPORT
 bool MP4DeleteTrackEdit(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId);
 
 MP4V2_EXPORT
 uint32_t MP4GetTrackNumberOfEdits(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId);
 
 MP4V2_EXPORT
 MP4Timestamp MP4GetTrackEditStart(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId);
 
 MP4V2_EXPORT
 MP4Duration MP4GetTrackEditTotalDuration(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId DEFAULT(MP4_INVALID_EDIT_ID) );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId DEFAULT(MP4_INVALID_EDIT_ID));
 
 MP4V2_EXPORT
 MP4Timestamp MP4GetTrackEditMediaStart(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId);
 
 MP4V2_EXPORT
 bool MP4SetTrackEditMediaStart(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId,
-    MP4Timestamp  startTime );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId,
+        MP4Timestamp startTime);
 
 MP4V2_EXPORT
 MP4Duration MP4GetTrackEditDuration(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId);
 
 MP4V2_EXPORT
 bool MP4SetTrackEditDuration(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId,
-    MP4Duration   duration );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId,
+        MP4Duration duration);
 
 MP4V2_EXPORT
 int8_t MP4GetTrackEditDwell(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId);
 
 MP4V2_EXPORT
 bool MP4SetTrackEditDwell(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4EditId     editId,
-    bool          dwell );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4EditId editId,
+        bool dwell);
 
 MP4V2_EXPORT
 bool MP4ReadSampleFromEditTime(
-    /* input parameters */
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4Timestamp  when,
-    /* input/output parameters */
-    uint8_t** ppBytes,
-    uint32_t* pNumBytes,
-    /* output parameters */
-    MP4Timestamp* pStartTime DEFAULT(NULL),
-    MP4Duration*  pDuration DEFAULT(NULL),
-    MP4Duration*  pRenderingOffset DEFAULT(NULL),
-    bool*         pIsSyncSample DEFAULT(NULL) );
+        /* input parameters */
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4Timestamp when,
+        /* input/output parameters */
+        uint8_t **ppBytes,
+        uint32_t *pNumBytes,
+        /* output parameters */
+        MP4Timestamp *pStartTime DEFAULT(NULL),
+        MP4Duration *pDuration DEFAULT(NULL),
+        MP4Duration *pRenderingOffset DEFAULT(NULL),
+        bool *pIsSyncSample DEFAULT(NULL));
 
 MP4V2_EXPORT
 MP4SampleId MP4GetSampleIdFromEditTime(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4Timestamp  when,
-    MP4Timestamp* pStartTime DEFAULT(NULL),
-    MP4Duration*  pDuration DEFAULT(NULL) );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4Timestamp when,
+        MP4Timestamp *pStartTime DEFAULT(NULL),
+        MP4Duration *pDuration DEFAULT(NULL));
 
 /* time conversion utilties */
 
@@ -381,23 +381,23 @@ MP4SampleId MP4GetSampleIdFromEditTime(
 
 MP4V2_EXPORT
 uint64_t MP4ConvertFromMovieDuration(
-    MP4FileHandle hFile,
-    MP4Duration   duration,
-    uint32_t      timeScale );
+        MP4FileHandle hFile,
+        MP4Duration duration,
+        uint32_t timeScale);
 
 MP4V2_EXPORT
 uint64_t MP4ConvertFromTrackTimestamp(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4Timestamp  timeStamp,
-    uint32_t      timeScale );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4Timestamp timeStamp,
+        uint32_t timeScale);
 
 MP4V2_EXPORT
 MP4Timestamp MP4ConvertToTrackTimestamp(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    uint64_t      timeStamp,
-    uint32_t      timeScale );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        uint64_t timeStamp,
+        uint32_t timeScale);
 
 /** Convert duration from track time scale to an arbitrary time scale.
  *
@@ -418,10 +418,10 @@ MP4Timestamp MP4ConvertToTrackTimestamp(
  */
 MP4V2_EXPORT
 uint64_t MP4ConvertFromTrackDuration(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    MP4Duration   duration,
-    uint32_t      timeScale );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        MP4Duration duration,
+        uint32_t timeScale);
 
 /** Convert duration from arbitrary time scale to track time scale.
  *
@@ -440,30 +440,30 @@ uint64_t MP4ConvertFromTrackDuration(
  */
 MP4V2_EXPORT
 MP4Duration MP4ConvertToTrackDuration(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId,
-    uint64_t      duration,
-    uint32_t      timeScale );
+        MP4FileHandle hFile,
+        MP4TrackId trackId,
+        uint64_t duration,
+        uint32_t timeScale);
 
 MP4V2_EXPORT
-char* MP4BinaryToBase16(
-    const uint8_t* pData,
-    uint32_t       dataSize );
+char *MP4BinaryToBase16(
+        const uint8_t *pData,
+        uint32_t dataSize);
 
 MP4V2_EXPORT
-char* MP4BinaryToBase64(
-    const uint8_t* pData,
-    uint32_t       dataSize );
+char *MP4BinaryToBase64(
+        const uint8_t *pData,
+        uint32_t dataSize);
 
 MP4V2_EXPORT
-uint8_t* Base64ToBinary(
-    const char* pData,
-    uint32_t    decodeSize,
-    uint32_t*   pDataSize );
+uint8_t *Base64ToBinary(
+        const char *pData,
+        uint32_t decodeSize,
+        uint32_t *pDataSize);
 
 MP4V2_EXPORT
 void MP4Free(
-    void* p );
+        void *p);
 
 /** Set the function to call in place of default logging behavior
  *
@@ -471,7 +471,7 @@ void MP4Free(
  */
 MP4V2_EXPORT
 void MP4SetLogCallback(
-    MP4LogCallback cb_func );
+        MP4LogCallback cb_func);
 /** @} ***********************************************************************/
 
 /**
@@ -482,7 +482,7 @@ void MP4SetLogCallback(
  * @see MP4LogSetLevel() for further details.
  */
 MP4V2_EXPORT
-MP4LogLevel MP4LogGetLevel( void );
+MP4LogLevel MP4LogGetLevel(void);
 
 /**
  * Set the maximum level for diagnostic information
@@ -490,6 +490,6 @@ MP4LogLevel MP4LogGetLevel( void );
  * @param verbosity the level to set
  */
 MP4V2_EXPORT
-void MP4LogSetLevel( MP4LogLevel verbosity );
+void MP4LogSetLevel(MP4LogLevel verbosity);
 
 #endif /* MP4V2_GENERAL_H */

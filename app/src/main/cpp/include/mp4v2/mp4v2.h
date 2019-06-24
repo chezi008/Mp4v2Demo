@@ -31,9 +31,11 @@
 #define MP4V2_MP4V2_H
 
 /*****************************************************************************/
+///#include <mp4v2/platform.h>
+#include "platform.h"
+///#include <mp4v2/project.h>
+#include "project.h.in"
 
-#include <mp4v2/platform.h>
-#include <mp4v2/project.h>
 
 /*****************************************************************************/
 
@@ -53,18 +55,28 @@ extern "C" {
 #endif
 
 /*****************************************************************************/
-
-#include <mp4v2/general.h>
-#include <mp4v2/file.h>
-#include <mp4v2/file_prop.h>
-#include <mp4v2/track.h>
-#include <mp4v2/track_prop.h>
-#include <mp4v2/sample.h>
-#include <mp4v2/chapter.h>
-#include <mp4v2/itmf_generic.h>
-#include <mp4v2/itmf_tags.h>
-#include <mp4v2/streaming.h>
-#include <mp4v2/isma.h>
+///#include <mp4v2/general.h>
+#include "general.h"
+///#include <mp4v2/file.h>
+#include "file.h"
+///#include <mp4v2/file_prop.h>
+#include "file_prop.h"
+///#include <mp4v2/track.h>
+#include "track.h"
+///#include <mp4v2/track_prop.h>
+#include "track_prop.h"
+///#include <mp4v2/sample.h>
+#include "sample.h"
+///#include <mp4v2/chapter.h>
+#include "chapter.h"
+///#include <mp4v2/itmf_generic.h>
+#include "itmf_generic.h"
+///#include <mp4v2/itmf_tags.h>
+#include "itmf_tags.h"
+///#include <mp4v2/streaming.h>
+#include "streaming.h"
+///#include <mp4v2/isma.h>
+#include "isma.h"
 
 /*****************************************************************************/
 

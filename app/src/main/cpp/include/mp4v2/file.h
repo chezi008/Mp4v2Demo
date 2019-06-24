@@ -16,8 +16,7 @@
 #define MP4_CLOSE_DO_NOT_COMPUTE_BITRATE 0x01
 
 /** Enumeration of file modes for custom file provider. */
-typedef enum MP4FileMode_e
-{
+typedef enum MP4FileMode_e {
     FILEMODE_UNDEFINED, /**< undefined */
     FILEMODE_READ,      /**< file may be read */
     FILEMODE_MODIFY,    /**< file may be read/written */
@@ -33,13 +32,19 @@ typedef enum MP4FileMode_e
  *  maxChunkSize is a hint suggesting what the max size of data should be read
  *  as in underlying read/write operations. A value of 0 indicates there is no hint.
  */
-typedef struct MP4FileProvider_s
-{
-    void* ( *open  )( const char* name, MP4FileMode mode );
-    int   ( *seek  )( void* handle, int64_t pos );
-    int   ( *read  )( void* handle, void* buffer, int64_t size, int64_t* nin, int64_t maxChunkSize );
-    int   ( *write )( void* handle, const void* buffer, int64_t size, int64_t* nout, int64_t maxChunkSize );
-    int   ( *close )( void* handle );
+typedef struct MP4FileProvider_s {
+    void *( *open    )(const char *name, MP4FileMode mode);
+
+    int ( *seek    )(void *handle, int64_t pos);
+
+    int ( *read    )(void *handle, void *buffer, int64_t size, int64_t *nin, int64_t maxChunkSize);
+
+    int ( *write   )(void *handle, const void *buffer, int64_t size, int64_t *nout,
+                     int64_t maxChunkSize);
+
+    int ( *close   )(void *handle);
+
+    int ( *getSize )(void *handle, int64_t *nout);
 } MP4FileProvider;
 
 /** Close an mp4 file.
@@ -54,8 +59,8 @@ typedef struct MP4FileProvider_s
  */
 MP4V2_EXPORT
 void MP4Close(
-    MP4FileHandle hFile,
-    uint32_t    flags DEFAULT(0) );
+        MP4FileHandle hFile,
+        uint32_t flags DEFAULT(0));
 
 /** Create a new mp4 file.
  *
@@ -81,8 +86,8 @@ void MP4Close(
  */
 MP4V2_EXPORT
 MP4FileHandle MP4Create(
-    const char* fileName,
-    uint32_t    flags DEFAULT(0) );
+        const char *fileName,
+        uint32_t flags DEFAULT(0));
 
 /** Create a new mp4 file with extended options.
  *
@@ -112,14 +117,86 @@ MP4FileHandle MP4Create(
  */
 MP4V2_EXPORT
 MP4FileHandle MP4CreateEx(
-    const char* fileName,
-    uint32_t    flags DEFAULT(0),
-    int         add_ftyp DEFAULT(1),
-    int         add_iods DEFAULT(1),
-    char*       majorBrand DEFAULT(0),
-    uint32_t    minorVersion DEFAULT(0),
-    char**      compatibleBrands DEFAULT(0),
-    uint32_t    compatibleBrandsCount DEFAULT(0) );
+        const char *fileName,
+        uint32_t flags DEFAULT(0),
+        int add_ftyp DEFAULT(1),
+        int add_iods DEFAULT(1),
+        char *majorBrand DEFAULT(0),
+        uint32_t minorVersion DEFAULT(0),
+        char **compatibleBrands DEFAULT(0),
+        uint32_t compatibleBrandsCount DEFAULT(0));
+
+/** Create a new mp4 file.
+ *
+ *  MP4CreateProvider is the first call that should be used when you want to
+ *  create a new, empty mp4 file. It is equivalent to opening a file for
+ *  writing, but also involved with creation of necessary mp4 framework
+ *  structures. ie. invoking MP4CreateProvider() followed by MP4Close() will
+ *  result in a file with a non-zero size.
+ *
+ *  @param fileName pathname of the file to be created.
+ *      On Windows, this should be a UTF-8 encoded string.
+ *      On other platforms, it should be an 8-bit encoding that is
+ *      appropriate for the platform, locale, file system, etc.
+ *      (prefer to use UTF-8 when possible).
+ *  @param flags bitmask that allows the user to set 64-bit values for
+ *      data or time atoms. Valid bits may be any combination of:
+ *          @li #MP4_CREATE_64BIT_DATA
+ *          @li #MP4_CREATE_64BIT_TIME
+ *  @param fileProvider custom implementation of file I/O operations.
+ *      All functions in structure must be implemented.
+ *      The structure is immediately copied internally.
+ *
+ *  @return On success a handle of the newly created file for use in
+ *      subsequent calls to the library.
+ *      On error, #MP4_INVALID_FILE_HANDLE.
+ */
+MP4V2_EXPORT
+MP4FileHandle MP4CreateProvider(
+        const char *fileName,
+        uint32_t flags DEFAULT(0),
+        const MP4FileProvider *fileProvider DEFAULT(NULL));
+
+/** Create a new mp4 file with extended options.
+ *
+ *  MP4CreateProviderEx is an extended version of MP4CreateProvider().
+ *
+ *  @param fileName pathname of the file to be created.
+ *      On Windows, this should be a UTF-8 encoded string.
+ *      On other platforms, it should be an 8-bit encoding that is
+ *      appropriate for the platform, locale, file system, etc.
+ *      (prefer to use UTF-8 when possible).
+ *  @param flags bitmask that allows the user to set 64-bit values for
+ *      data or time atoms. Valid bits may be any combination of:
+ *          @li #MP4_CREATE_64BIT_DATA
+ *          @li #MP4_CREATE_64BIT_TIME
+ *  @param fileProvider custom implementation of file I/O operations.
+ *      All functions in structure must be implemented.
+ *      The structure is immediately copied internally.
+ *  @param add_ftyp if true an <b>ftyp</b> atom is automatically created.
+ *  @param add_iods if true an <b>iods</b> atom is automatically created.
+ *  @param majorBrand <b>ftyp</b> brand identifier.
+ *  @param minorVersion <b>ftyp</b> informative integer for the minor version
+ *      of the major brand.
+ *  @param compatibleBrands <b>ftyp</b> list of compatible brands.
+ *  @param compatibleBrandsCount is the count of items specified in
+ *      compatibleBrands.
+ *
+ *  @return On success a handle of the newly created file for use in
+ *      subsequent calls to the library.
+ *      On error, #MP4_INVALID_FILE_HANDLE.
+ */
+MP4V2_EXPORT
+MP4FileHandle MP4CreateProviderEx(
+        const char *fileName,
+        uint32_t flags DEFAULT(0),
+        const MP4FileProvider *fileProvider DEFAULT(NULL),
+        int add_ftyp DEFAULT(1),
+        int add_iods DEFAULT(1),
+        char *majorBrand DEFAULT(0),
+        uint32_t minorVersion DEFAULT(0),
+        char **compatibleBrands DEFAULT(0),
+        uint32_t compatibleBrandsCount DEFAULT(0));
 
 /** Dump mp4 file contents as ASCII either to stdout or the
  *  log callback (@p see MP4SetLogCallback)
@@ -144,8 +221,8 @@ MP4FileHandle MP4CreateEx(
  */
 MP4V2_EXPORT
 bool MP4Dump(
-    MP4FileHandle hFile,
-    bool          dumpImplicits DEFAULT(0) );
+        MP4FileHandle hFile,
+        bool dumpImplicits DEFAULT(0));
 
 /** Return a textual summary of an mp4 file.
  *
@@ -184,9 +261,9 @@ Track  Type   Info
  *  @see MP4Info().
  */
 MP4V2_EXPORT
-char* MP4FileInfo(
-    const char* fileName,
-    MP4TrackId  trackId DEFAULT(MP4_INVALID_TRACK_ID) );
+char *MP4FileInfo(
+        const char *fileName,
+        MP4TrackId trackId DEFAULT(MP4_INVALID_TRACK_ID));
 
 /** Accessor for the filename associated with a file handle
  *
@@ -196,8 +273,8 @@ char* MP4FileInfo(
  * associated with @p hFile
  */
 MP4V2_EXPORT
-const char* MP4GetFilename(
-    MP4FileHandle hFile );
+const char *MP4GetFilename(
+        MP4FileHandle hFile);
 
 /** Return a textual summary of an mp4 file.
  *
@@ -232,9 +309,9 @@ Track  Type   Info
  *  @see MP4FileInfo().
  */
 MP4V2_EXPORT
-char* MP4Info(
-    MP4FileHandle hFile,
-    MP4TrackId    trackId DEFAULT(MP4_INVALID_TRACK_ID) );
+char *MP4Info(
+        MP4FileHandle hFile,
+        MP4TrackId trackId DEFAULT(MP4_INVALID_TRACK_ID));
 
 /** Modify an existing mp4 file.
  *
@@ -259,8 +336,8 @@ char* MP4Info(
  */
 MP4V2_EXPORT
 MP4FileHandle MP4Modify(
-    const char* fileName,
-    uint32_t    flags DEFAULT(0) );
+        const char *fileName,
+        uint32_t flags DEFAULT(0));
 
 /** Optimize the layout of an mp4 file.
  *
@@ -305,8 +382,8 @@ MP4FileHandle MP4Modify(
  */
 MP4V2_EXPORT
 bool MP4Optimize(
-    const char* fileName,
-    const char* newFileName DEFAULT(NULL) );
+        const char *fileName,
+        const char *newFileName DEFAULT(NULL));
 
 
 /** Read an existing mp4 file.
@@ -329,7 +406,7 @@ bool MP4Optimize(
  */
 MP4V2_EXPORT
 MP4FileHandle MP4Read(
-    const char* fileName );
+        const char *fileName);
 
 /** Read an existing mp4 file.
  *
@@ -354,8 +431,8 @@ MP4FileHandle MP4Read(
  */
 MP4V2_EXPORT
 MP4FileHandle MP4ReadProvider(
-    const char*            fileName,
-    const MP4FileProvider* fileProvider DEFAULT(NULL) );
+        const char *fileName,
+        const MP4FileProvider *fileProvider DEFAULT(NULL));
 
 /** @} ***********************************************************************/
 

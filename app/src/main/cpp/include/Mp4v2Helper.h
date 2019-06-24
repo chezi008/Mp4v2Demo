@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/lang/String;II)I
  */
 JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_initMp4Encoder
-  (JNIEnv *, jclass, jstring, jint, jint);
+        (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     com_seuic_jni_Mp4v2Helper
@@ -21,7 +21,7 @@ JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_initMp4Encoder
  * Signature: ([BI)I
  */
 JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_mp4VEncode
-  (JNIEnv *, jclass, jbyteArray, jint);
+        (JNIEnv *, jclass, jbyteArray, jint);
 
 /*
  * Class:     com_seuic_jni_Mp4v2Helper
@@ -29,7 +29,7 @@ JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_mp4VEncode
  * Signature: ([BI)I
  */
 JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_mp4AEncode
-  (JNIEnv *, jclass, jbyteArray, jint);
+        (JNIEnv *, jclass, jbyteArray, jint);
 
 /*
  * Class:     com_seuic_jni_Mp4v2Helper
@@ -37,7 +37,7 @@ JNIEXPORT jint JNICALL Java_com_seuic_jni_Mp4v2Helper_mp4AEncode
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_seuic_jni_Mp4v2Helper_closeMp4Encoder
-  (JNIEnv *, jclass);
+        (JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }
